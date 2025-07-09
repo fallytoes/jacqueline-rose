@@ -1,0 +1,8 @@
+<label for="sort-by">Sort By ▼</label>
+<select id="sort-by" name="sort_by" onchange="this.form.submit()">
+  {% for option in collection.sort_options %}
+    <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+      {{ option.name }}
+    </option>
+  {% endfor %}
+</select>

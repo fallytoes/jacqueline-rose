@@ -1,0 +1,236 @@
+{% comment %}
+  Renders a grid of product media items. This snippet is used in the product template to display the product media items in a grid layout.
+
+  Accepts:
+    - product: {Object} The product object (required)
+    - section: {Object} The section object (required)
+{% endcomment %}
+
+{{ 'component-product-media-grid.min.css' | asset_url | stylesheet_tag }}
+
+{% liquid 
+  assign is_odd = true
+  assign even_or_odd = product.media.size | modulo: 2
+  if even_or_odd == 0
+    assign is_odd = false
+  endif
+
+  assign last_media = product.media.last
+
+  assign custom_aspect_ratio = false
+  if section.settings.image_shape != 'original'
+    assign custom_aspect_ratio = true
+  endif
+
+  if section.settings.image_shape == 'adapt_to_first_image'
+    assign first_image_ratio = product.media.first.preview_image.aspect_ratio
+    assign adapt_ratio = 1 | divided_by: first_image_ratio | times: 100
+  endif
+
+  assign enable_autoplay = section.settings.enable_autoplay
+  assign enable_video_loop = section.settings.enable_video_loop
+  assign show_video_controls = section.settings.show_video_controls
+
+  comment
+    Product badges
+  endcomment
+  assign preorder_string = 'products.product.preorder' | t | downcase
+  assign preorder_product = false
+
+  for tag in product.tags
+    assign lowercase_tag = tag | downcase
+    if lowercase_tag contains preorder_string
+      assign preorder_product = true
+    endif
+    assign lowercase_tag = tag | downcase
+    if lowercase_tag contains preorder_string
+      assign preorder_product = true
+    endif
+    if preorder_product == false and tag contains '_badge:'
+      assign custom_badge = tag | remove: '_badge:'
+    endif
+  endfor
+%}
+
+<safe-load-scripts class="hidden">
+  <script src="{{ 'component-deferred-media.js' | asset_url }}" defer="defer" type="module" data-flow-load-key="deferred-media"></script>
+</safe-load-scripts>
+
+<safe-load-scripts class="hidden">
+  <script src="{{ 'component-product-media-grid.js' | asset_url }}" defer="defer" type="module" data-flow-load-key="product-media"></script>
+</safe-load-scripts>
+
+{% if settings.show_badges %}
+  {% capture product_badge %}
+    {% if product != blank %}
+      {% if product.available %}
+        {% if preorder_product %}
+          {% render 'badge' with badge: 'preorder', preorder_badge: preorder_string %}
+        {% elsif custom_badge %}
+          {% render 'badge' with badge: 'custom', custom_badge: custom_badge %}
+        {% else %}
+          {% render 'badge' with badge: 'sale', badge_product: product, use_variant: true %}
+        {% endif %}
+      {% else %}
+        {% render 'badge' with badge: 'sold-out', badge_product: product %}
+      {% endif %}
+    {% else %}
+      {% render 'badge' with badge: 'sold-out' %}
+    {% endif %}
+  {% endcapture %}
+{% endif %}
+
+{% if product.media.size > 0 %}
+  <product-media-grid id="{{ section.id }}" class="product-media--grid-wrapper small--hide medium--hide" data-media-type="{{ type }}">
+    {% comment %} ==== BADGES ==== {% endcomment %}
+    <div data-product-badge>
+      {{ product_badge }}
+    </div>
+
+    {% comment %} ==== IMAGES ==== {% endcomment %}
+    <div data-media-main class="{% if product.media.size == 1 %} media--single{% endif %}{% if custom_aspect_ratio %} custom-aspect-ratio{% endif %}">
+      {% if product.media.size > 1 %}
+        {% comment %} ==== ODD IMAGES ==== {% endcomment %}
+        <div class="media-column--odd">
+          {% for media in product.media %}
+            {% unless media == last_media and custom_aspect_ratio %}
+              {% liquid 
+                assign index_is_odd = true
+                assign index_even_or_odd = forloop.index | modulo: 2
+                if index_even_or_odd == 0
+                  assign index_is_odd = false
+                endif
+              %}
+
+              {% if index_is_odd %}
+                {% if media.media_type == 'image' %}
+                  <a
+                    data-main-media-link
+                    href="{{ media.preview_image | image_url: width: 1445 }}"
+                    data-pswp-width="{{ media.width }}"
+                    data-pswp-height="{{ media.height }}"
+                    target="_blank"
+                    {% if adapt_ratio %}style="padding-bottom: {{ adapt_ratio }}%;"{% endif %}
+                  >
+
+                    <img
+                      class="theme-img media-ratio--{{ section.settings.image_shape }}"
+                      src="{{ media.preview_image | image_url: width: 1445 }}"
+                      alt="{% if media.alt != product.title %}{{ media.alt }}{% endif %}"
+                      width="{{ media.width }}"
+                      height="{{ media.height }}"
+                      sizes="calc(100vw / 4)"
+                      loading="eager"
+                    />
+                  
+                  </a>
+                {% else %}
+                  {% render 'deferred-media' with delayed_media: media, section_id: section.id, enable_video_loop: enable_video_loop, media_wrapper_classes: 'product-single__media__wrapper', aspect_ratio: section.settings.image_shape, enable_autoplay: enable_autoplay, media_product: product, media_type: 'grid', show_controls: show_video_controls %}
+                {% endif %}
+              {% endif %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+
+        {% comment %} ==== EVEN IMAGES ==== {% endcomment %}
+        <div class="media-column--even">
+          {% for media in product.media %}
+            {% liquid 
+              assign index_is_odd = true
+              assign index_even_or_odd = forloop.index | modulo: 2
+              if index_even_or_odd == 0
+                assign index_is_odd = false
+              endif
+            %}
+
+            {% unless index_is_odd %}
+              {% if media.media_type == 'image' %}
+                <a
+                  data-main-media-link
+                  href="{{ media.preview_image | image_url: width: 1445 }}"
+                  data-pswp-width="{{ media.width }}"
+                  data-pswp-height="{{ media.height }}"
+                  target="_blank"
+                  {% if adapt_ratio %}style="padding-bottom: {{ adapt_ratio }}%;"{% endif %}
+                >
+
+                  <img
+                    class="theme-img media-ratio--{{ section.settings.image_shape }}"
+                    src="{{ media.preview_image | image_url: width: 1445 }}"
+                    alt="{% if media.alt != product.title %}{{ media.alt }}{% endif %}"
+                    width="{{ media.width }}"
+                    height="{{ media.height }}"
+                    sizes="calc(100vw / 4)"
+                    loading="eager"
+                  />
+                
+                </a>
+              {% else %}
+                {% render 'deferred-media' with delayed_media: media, section_id: section.id, enable_video_loop: enable_video_loop, media_wrapper_classes: 'product-single__media__wrapper', aspect_ratio: section.settings.image_shape, enable_autoplay: enable_autoplay, media_product: product, media_type: 'grid', show_controls: show_video_controls %}
+              {% endif %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if is_odd and custom_aspect_ratio or product.media.size == 1 %}
+        {% comment %} ==== LAST ODD IMAGE ==== {% endcomment %}
+        <div class="media-column--odd-full">
+          {% for media in product.media %}
+            {% if media == last_media %}
+              {% if media.media_type == 'image' %}
+                <a
+                  data-main-media-link
+                  href="{{ media.preview_image | image_url: width: 1445 }}"
+                  data-pswp-width="{{ media.width }}"
+                  data-pswp-height="{{ media.height }}"
+                  target="_blank"
+                  {% if adapt_ratio %}style="padding-bottom: {{ adapt_ratio }}%;"{% endif %}
+                >
+    
+                  <img
+                    class="theme-img media-ratio--{{ section.settings.image_shape }}"
+                    src="{{ media.preview_image | image_url: width: 1445 }}"
+                    alt="{% if media.alt != product.title %}{{ media.alt }}{% endif %}"
+                    width="{{ media.width }}"
+                    height="{{ media.height }}"
+                    sizes="calc(100vw / 4)"
+                    loading="eager"
+                  />
+                
+                </a>
+              {% else %}
+                {% render 'deferred-media' with delayed_media: media, section_id: section.id, enable_video_loop: enable_video_loop, media_wrapper_classes: 'product-single__media__wrapper', aspect_ratio: section.settings.image_shape, enable_autoplay: enable_autoplay, media_product: product, media_type: 'grid', show_controls: show_video_controls %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </product-media-grid>
+{% else %}
+  <product-media-grid class="product-media--grid-wrapper small--hide medium--hide">
+    <div data-product-badge>
+      {{ product_badge }}
+    </div>
+    
+    {% if onboarding %}
+      <div data-media-main {% if custom_aspect_ratio %}class="custom-aspect-ratio"{% endif %}>
+        {% assign svg_classes = 'icon icon--placeholder media-ratio--' | append: section.settings.image_shape %}
+        {% for i in (1..3) %}
+          <div class="media-column--odd{% if i == 3 %}-full{% endif %}">
+            {% assign svg_name = 'product-' | append: i %}
+            {{ svg_name | placeholder_svg_tag: svg_classes }}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div data-media-main class="product-media--grid">
+        <div class="product-media--grid__item">
+          {% assign svg_classes = 'icon icon--placeholder media-ratio--' | append: section.settings.image_shape %}
+          {{ 'product-1' | append: current | placeholder_svg_tag: svg_classes }}
+        </div>
+      </div>
+    {% endif %}
+  </product-media-grid>
+{% endif %}

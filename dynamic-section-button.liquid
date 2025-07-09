@@ -1,0 +1,64 @@
+{% comment %}
+  Renders a link with section level button styling.
+
+  Accepts:
+  - id (string): Unique identifier for applying css (for example, section id or block id).
+  - has_link (boolean): If true, the button will be a link.
+  - link (url): Url for the button link.
+  - label (string): Button label.
+  - aria_label (string): Optional. Aria label for the anchor element.
+  - style (string): Button style. Options are 'filled', 'outlined', 'underlined'.
+  - wrapper (boolean): If true, the anchor element will be wrapped in a div (default: true).
+  - div_classes (string): Additional classes to add to the wrapper div.
+  - a_classes (string): Additional classes to add to the anchor element.
+  - attributes (string): Additional attributes to add to the anchor element.
+{% endcomment %}
+
+{% if label != blank %}
+
+  {%- liquid
+    unless wrapper == false
+      assign wrapper = true
+    endunless
+
+    case style
+      when 'filled'
+        assign style_classes = 'btn'
+      when 'outlined'
+        assign style_classes = 'btn btn--secondary'
+      when 'underlined'
+        assign style_classes = 'btn--underlined'
+    endcase
+
+    if has_link != true and has_link != false
+      assign has_link = true
+    endif
+  -%}
+
+  {% if wrapper %}
+    <div class="{{ div_classes }}{% if style == 'underlined' %} text-link-animated{% endif %}">
+  {% endif %}
+
+  {% if has_link %}
+    <a
+      href="{% if link %}{{ link }}{% else %}{{ request.origin }}{{ request.path }}{% endif %}"
+      class="dynamic-section-button--{{ id }} {{ style_classes }}{% if a_classes %} {{ a_classes }}{% endif %}"
+      {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+      {% if attributes %}{{ attributes }}{% endif %}
+    >
+      {{ label }}
+    </a>
+  {% else %}
+    <button
+      class="dynamic-section-button--{{ id }} {{ style_classes }}{% if a_classes %} {{ a_classes }}{% endif %}"
+      {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+      {% if attributes %}{{ attributes }}{% endif %}
+    >
+      {{ label }}
+    </button>
+  {% endif %}
+
+  {% if wrapper %}
+    </div>
+  {% endif %}
+{% endif %}

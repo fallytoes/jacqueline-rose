@@ -1,0 +1,19 @@
+{% if collection.filters %}
+  <form id="CollectionFiltersForm" class="facets__form">
+    {% for filter in collection.filters %}
+      <details class="filter-group">
+        <summary>{{ filter.label }} ▼</summary>
+        <ul>
+          {% for value in filter.values %}
+            <li>
+              <input type="checkbox" id="filter-{{ filter.label | handle }}-{{ forloop.index }}"
+                     name="{{ value.param_name }}" value="{{ value.value }}"
+                     {% if value.active %}checked{% endif %}>
+              <label for="filter-{{ filter.label | handle }}-{{ forloop.index }}">{{ value.label }}</label>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+    {% endfor %}
+  </form>
+{% endif %}

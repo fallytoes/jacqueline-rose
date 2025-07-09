@@ -1,0 +1,111 @@
+<div class="right-drawer-vue">
+  {% comment %} There's no route available for the predictive search api URL yet {% endcomment %}
+  <wetheme-right-drawer
+    search-url="/search/suggest.json"
+    is-predictive="{{ settings.predictive_search_enabled }}"
+    search-collections="{{ settings.predictive_search_collections }}"
+    language-url="{{ localization.language.root_url }}"
+  >
+  </wetheme-right-drawer>
+</div>
+<script type="text/x-template" id="wetheme-right-drawer-template">
+  <div>
+    <transition name="drawer-right">
+      <div :class="[type === 'page' ? 'display-flex' : '']" class="drawer drawer--right drawer--cart" v-if="isOpen" ref="drawerRight">
+        <div :class="[type === 'page' ? 'display-flex' : '', 'drawer__header', 'sitewide--title-wrapper']">
+          <div class="drawer__close js-drawer-close">
+            <button type="button" class="icon-fallback-text standalone-icon--wrapper" aria-label="{{ 'general.accessibility.dismiss.close' | t }}" ref="drawerClose" v-on:click="close">
+              <span class="fallback-text">{{ 'general.accessibility.dismiss.close' | t }}</span>
+              {% render 'theme-icon' with icon: 'close', iconSize: 20 %}
+            </button>
+          </div>
+          <input ref="drawerFocus" tabindex="-1" aria-hidden="true" class="sr-only" />
+          <div :class="[type === 'page' ? 'remove-margin' : '', 'drawer__title', 'h2', 'true']">
+            <span class="sr-only" v-if="type === 'page'">{{ 'products.product.size_guide' | t }}</span>
+            <span v-if="type === 'search'">{{ 'general.search.title' | t }}</span>
+          </div>
+        </div>
+
+        {% capture button_styles %}
+          {% if settings.drawer--override_button_colors %}
+            style="--primary-btn-bg-color: {{ settings.drawer--button_background_color }}; --primary-btn-text-color: {{ settings.drawer--button_text_color }};"
+          {% endif %}
+        {% endcapture %}
+
+        <div id="SearchContainer" v-if="type === 'search'">
+          <div class="search-drawer">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button aria-label="{{ 'general.search.submit' | t }}" type="submit" class="search-input--btn icon-fallback-text standalone-icon--wrapper" v-on:click="onSearchSubmit" tabindex="0">
+                  {% render 'theme-icon' with icon: 'search', iconSize: 20 %}
+                  <span class="fallback-text">{{ 'general.search.submit' | t }}</span>
+                </button>
+              </span>
+              <div class="search-input-group">
+                <input
+                  type="search" name="q" id="search-input" placeholder="{{ 'general.search.placeholder' | t }}"
+                  class="input-group-field" aria-label="{{ 'general.search.placeholder' | t }}" autocomplete="off" autocorrect="off" spellcheck="false" ref="searchText"
+                  v-model="searchQuery" @keydown.enter="onSearchSubmit"
+                />
+                <button type="button" aria-label="{{ 'general.search.clear' | t }}" class="search-drawer--clear icon-fallback-text standalone-icon--wrapper" v-if="searchQuery.length > 0" v-on:click="clearSearchInput">
+                  <span class="fallback-text">{{ 'general.search.clear' | t }}</span>
+                  {% render 'theme-icon' with icon: 'close', iconSize: 20 %}
+                </button>
+              </div>
+            </div>
+            <div class="wrapper-padded">
+              <div id="search-results" class="grid-uniform">
+                <div v-if="searching" class="search-loading standalone-icon--wrapper loading-state-icon">
+                  {% render 'theme-icon' with icon: 'circle-notch', iconClasses: 'spin flex-full', icon_fill: settings.color_primary_button_text %}<span class="sr-only">{{ 'collections.paginate.loading' | t }}</span>
+                </div>
+                <div v-text="searchSummary" v-if="!searching"></div>
+                <div class="search-results__meta top" v-if="searchHasResults">
+                  <div class="search-results__meta-view-all"><span id="search-show-more" class="search-show-more--btn"><a v-bind:href="searchPageUrlWithQuery">{{ 'general.search.view_all' | t }}</a></span></div>
+                </div>
+                <div class="" v-for="group in searchGroups" v-if="!searching">
+                  <h2 v-text="group.name" v-if="group.results.length"></h2>
+                  <div class="indiv-search-listing-grid" v-for="result in group.results">
+                    <div class="grid">
+                      <div class="grid__item large--one-fifth live-search--image" v-if="result.featured_image">
+                        <a v-bind:href="`${result.url}`" v-bind:title="result.title">
+                          <span v-if="result.featured_image.url">
+                            <img
+                              class="theme-img" 
+                              loading="lazy"
+                              v-bind:src="result.featured_image.url"
+                              v-bind:alt="result.featured_image.alt"
+                            />
+                          </span>
+                        </a>
+                      </div>
+                      <div class="grid__item line-search-content" :class="(result.image || result.featured_image) ? 'large--four-fifths' : 'large--one-whole'">
+                        {% if settings.predictive_search_show_vendor %}
+                        <div v-if="result.vendor" v-text="result.vendor"></div>
+                        {% endif %}
+                        <h5>
+                          <a v-bind:href="`${result.url}`" v-html="result.title ? result.title : result.styled_text"></a>
+                        </h5>
+                        <div v-if="!result.available && group.name == 'Products'">{{ 'products.product.sold_out' | t }}</div>
+                        {% if settings.predictive_search_show_price %}
+                        <div v-if="result.price" v-html="result.price"></div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <span class="search-drawer-separator" v-if="group.results.length"><hr /></span>
+                  </div>
+                </div>
+                <div class="search-results__meta bottom" v-if="searchHasResults">
+                  <div class="search-results__meta-view-all"><span id="search-show-more" class="search-show-more--btn"><a v-bind:href="searchPageUrlWithQuery">{{ 'general.search.view_all' | t }}</a></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="PageContainer" v-if="type === 'page'">
+          <div ref="pageContent"></div>
+        </div>
+      </div>
+    </transition>
+  </div>
+</script>
