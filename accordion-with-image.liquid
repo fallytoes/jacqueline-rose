@@ -1,0 +1,352 @@
+{{ 'section-accordion-with-image.min.css' | asset_url | stylesheet_tag }}
+
+{% if section.blocks.size > 0 %}
+  <div 
+    class="accordion-with-image-container accordion-with-image--{{ section.id }} color-scheme--{{ section.settings.colors }} wrapper-spacing--v wrapper-spacing--h" 
+    data-wetheme-section-type="collection--featured-collection" 
+    data-wetheme-section-id="{{ section.id }}"
+    style="--padding-section-top: {{ section.settings.section_padding_top }}px; --padding-section-bottom: {{ section.settings.section_padding_bottom }}px;"
+  >
+    {% comment %} Section title and description {% endcomment %}
+    {% render 'dynamic-section-header' with section_title: section.settings.section_title, section_description: section.settings.section_description %}
+
+    <div class="width--content main-content-wrapper{% if section.settings.image_position_desktop == 'left' %} main-content-wrapper--image-left{% endif %}{% if section.settings.image_position_mobile == 'top' %} main-content-wrapper--image-top{% endif %}">
+      <div class="accordion-wrapper{% if section.settings.accordion_image == blank %} width--narrow{% endif %}">
+        {% for block in section.blocks %}
+          {% assign content = block.settings.text %}
+          {% if block.settings.page.content %}
+            {% assign content = content | append: block.settings.page.content %}
+          {% endif %}
+
+          {% unless content == blank %}
+            <div class="collapsible-tab js{% if block.settings.open_by_default %} open{% endif %}{% if forloop.last %} last-tab{% endif %}" data-open-by-default="{{ block.settings.open_by_default }}" {{ block.shopify_attributes }}>
+              <collapsible-button data-block-id="{{ block.id }}" tabindex="0">
+                <div class="summary">
+                  {{ block.settings.accordion_header }}
+                  <span class="inline-icon--wrapper icon--right">
+                    {% if section.settings.faq_icon == "plus_minus" %}
+                      {% render 'theme-icon' with icon: 'plus', iconClasses: 'plus-icon' %}
+                      {% render 'theme-icon' with icon: 'minus', iconClasses: 'minus-icon' %}
+                    {% elsif section.settings.faq_icon == "caret" %}
+                      {% render 'theme-icon', icon: 'chevron_down', iconClasses: 'chevron-down' %}
+                    {% endif %}
+                  </span>
+                </div>
+              </collapsible-button>
+
+              <div class="collapsible-content">
+                <div class="content rte">
+                  <div class="text-link-animated richtext-block">
+                    {{ content }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="no-js">
+              {% comment %} Fallback html when JS is disabled. {% endcomment %}
+              <div class="collapsible-tab">
+                <details class="collapsible-tab-content" {% if block.settings.open_by_default %}open{% endif %}>
+                  <summary class="summary accordion__header" role="button" aria-expanded="false" tabindex="0">
+                    {{ block.settings.accordion_header }}
+                    <span class="inline-icon--wrapper icon--right">
+                      {% assign iconSize = 20 %}
+                      {% if section.settings.faq_icon == "plus_minus" %}
+                        {% render 'theme-icon' with icon: 'plus', iconSize: iconSize, iconClasses: 'plus-icon' %}
+                        {% render 'theme-icon' with icon: 'minus', iconSize: iconSize, iconClasses: 'minus-icon' %}
+                      {% elsif section.settings.faq_icon == "caret" %}
+                        {% render 'theme-icon', icon: 'chevron_up', iconSize: iconSize, iconClasses: 'chevron-up' %}
+                        {% render 'theme-icon', icon: 'chevron_down', iconSize: iconSize, iconClasses: 'chevron-down' %}
+                      {% endif %}
+                    </span>
+                  </summary>
+                  <div class="rte text-link-animated richtext-block">
+                    {{ content }}
+                  </div>
+                </details>
+              </div>
+            </div>
+            <safe-load-scripts class="hidden">
+              <script src="{{ 'component-collapsible-button.js' | asset_url }}" type="module" defer="defer" data-flow-load-key="component-collapsible-button"></script>
+            </safe-load-scripts>
+          {% endunless %}
+        {% endfor %}
+      </div>
+
+      <div class="image-wrapper">
+        <div class="content-wrapper{% if section.settings.image--background-color == 'rgba(0,0,0,0)' %} content-wrapper--no-padding{% endif %}">
+          {% unless section.settings.link == blank %}
+            <a href="{{ section.settings.link }}">
+          {% endunless %}
+            <div class="image--container">
+              {% if section.settings.accordion_image %}
+                {% render 'responsive-image' with section.settings.accordion_image %}
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'icon icon--placeholder' }}
+              {% endif %}
+            </div>
+            {% unless section.settings.title == blank %}<h2 style="color: {{ section.settings.image--text-color }};">{{ section.settings.title | strip }}</h2>{% endunless %}
+            {% unless section.settings.text == blank %}<p style="color: {{ section.settings.image--text-color }};">{{ section.settings.text | strip }}</p>{% endunless %}
+            {% unless section.settings.button_text == blank %}
+              <button class="btn accordion--button" style="background-color: {{ section.settings.button_background_color }}; color: {{ section.settings.button_text_color }};" aria-label="{{ section.settings.button_text }}">
+                {{ section.settings.button_text }}
+              </button>
+            {% endunless %}
+          {% unless section.settings.link == blank %}
+            </a>
+          {% endunless %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .accordion-with-image--{{ section.id }} .collapsible-tab .summary .minus-icon {
+      display: none;
+    }
+
+    .accordion-with-image--{{ section.id }} .collapsible-tab.open .summary .plus-icon {
+      display: none;
+    }
+
+    .accordion-with-image--{{ section.id }} .collapsible-tab.open .summary .minus-icon {
+      display: block;
+    }
+
+    .accordion-with-image--{{ section.id }} .content-wrapper {
+      background-color: {{ section.settings.image--background-color }};
+    }
+
+    .accordion-with-image--{{ section.id }} .accordion--button {
+      background-color: {{ section.settings.button_background_color }};
+      color: {{ section.settings.button_text_color }};
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.product--accordion-with-image.name",
+  "class": "accordion-with-image show-on-scroll",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "section_title",
+      "label": "t:all.Heading",
+      "default": "Share your story"
+    },
+    {
+      "type": "richtext",
+      "id": "section_description",
+      "label": "t:all.Description"
+    },
+    {
+      "type": "radio",
+      "id": "faq_icon",
+      "label": "t:all.Icon_style",
+      "options": [
+        {
+          "value": "plus_minus",
+          "label": "t:all.Plus_minus"
+        },
+        {
+          "value": "caret",
+          "label": "t:all.Caret"
+        }
+      ],
+      "default": "plus_minus"
+    },
+    {
+      "type": "image_picker",
+      "id": "accordion_image",
+      "label": "t:all.Image",
+      "info": "t:all.1400_x_1400px_recommended"
+    },
+    {
+      "type": "color",
+      "id": "image--background-color",
+      "label": "t:sections.product--accordion-with-image.settings.image--background-color.label",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "image--text-color",
+      "label": "t:sections.product--accordion-with-image.settings.image--text-color.label",
+      "default": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:all.Heading"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:all.Description"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:all.Image_link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "t:all.Button_label"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:all.Button_text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "t:all.Button_background",
+      "default": "#242424"
+    },
+    {
+      "type": "header",
+      "content": "t:all.Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "t:all.Spacing_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "t:all.px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "t:all.Spacing_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "t:all.px",
+      "default": 60
+    },
+    {
+      "type": "select",
+      "id": "image_position_desktop",
+      "label": "t:all.image_position_desktop",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:all.Left"
+        },
+        {
+          "value": "right",
+          "label": "t:all.Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "image_position_mobile",
+      "label": "t:all.image_position_mobile",
+      "options": [
+        {
+          "value": "top",
+          "label": "t:all.Top"
+        },
+        {
+          "value": "bottom",
+          "label": "t:all.Bottom"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "header",
+      "content": "t:all.Color"
+    },
+    {
+      "type": "select",
+      "id": "colors",
+      "label": "t:all.Color_scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "white",
+          "label": "t:all.Minimal"
+        },
+        {
+          "value": "light",
+          "label": "t:all.Light"
+        },
+        {
+          "value": "accent",
+          "label": "t:all.Feature"
+        },
+        {
+          "value": "dark",
+          "label": "t:all.Dark"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "t:sections.product--accordion-with-image.blocks.accordion.name",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.template--product.blocks.collapsible-tab.settings.info.content"
+        },
+        {
+          "type": "text",
+          "id": "accordion_header",
+          "label": "t:all.Heading",
+          "default": "About us"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:all.Text",
+          "default": "<p>Place some content here to describe this topic.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "t:all.Page"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "t:sections.template--product.blocks.collapsible-tab.settings.open_by_default.label",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.product--accordion-with-image.presets.name",
+      "blocks": [
+        {
+          "type": "accordion"
+        },
+        {
+          "type": "accordion"
+        },
+        {
+          "type": "accordion"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header"
+    ]
+  }
+}
+{% endschema %}

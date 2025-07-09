@@ -1,0 +1,372 @@
+{{ 'section-featured-collection.min.css' | asset_url | stylesheet_tag }}
+
+{% liquid 
+  assign wrapper_classes = ''
+
+  if section.settings.layout_style == 'slider' and settings.hover_navigation_desktop == 'above'
+    if section.settings.title != blank or section.settings.description != blank
+      assign wrapper_classes = 'remove--spacing'
+    endif
+  endif
+%}
+
+{% if section.settings.override_button_colors %}
+  {% assign grid_item_id = 'grid-item--' | append: section.id %}
+  {% render 'button-color-overrides' with
+    id: grid_item_id,
+    style: settings.quick_shop_button_style,
+    text_color: section.settings.button_text_color,
+    background_color: section.settings.button_background_color
+  %}
+{% endif %}
+
+<div
+  class="wrapper-spacing--v wrapper-spacing--h color-scheme--{{ section.settings.colors }}{% if request.visual_preview_mode %} animated fadeIn{% else %} show-on-scroll{% endif %}{% if section.settings.layout_style == 'slider' %} slider-nav--{{ settings.hover_navigation_desktop }}{% endif %}"
+  data-wetheme-section-type="collection--featured-collection" 
+  data-wetheme-section-id="{{ section.id }}"
+  style="--padding-section-top: {{ section.settings.section_padding_top }}px; --padding-section-bottom: {{ section.settings.section_padding_bottom }}px;"
+>
+  <div class="width--content">
+    {% comment %} Section title and description {% endcomment %}
+    {% render 'dynamic-section-header' with section_title: section.settings.title, section_description: section.settings.description, wrapper_classes: wrapper_classes %}
+
+    <div class="homepage-indiv-section-wrapper grid--full homepage-featured-content-wrapper">
+      {% liquid 
+        assign collection = collections[section.settings.collection]
+        assign tablet_item_width = 'medium--one-third'
+
+        case section.settings.grid-desktop
+          when 2
+            assign desktop_item_width = 'large--one-half'
+            assign tablet_item_width = 'medium--one-half'
+          when 3
+            assign desktop_item_width = 'large--one-third'
+          when 4
+            assign desktop_item_width = 'large--one-quarter'
+          when 5
+            assign desktop_item_width = 'large--one-fifth'
+          when 6
+            assign desktop_item_width = 'large--one-sixth'
+        endcase
+
+        case section.settings.grid-mobile
+          when "1"
+          assign mobile_item_width = 'small--one-whole'
+          when "2"
+            assign mobile_item_width = 'small--one-half'
+        endcase
+
+        assign grid_item_width = desktop_item_width | append: ' ' | append: tablet_item_width | append: ' ' | append: mobile_item_width
+        assign product_limit = section.settings.products_to_show
+      %}
+
+      <div 
+        class="grid-uniform product-grid--wrapper{% if section.settings.layout_style == 'slider' %} product-grid--slider-enabled{% endif %}"
+        {%- if section.settings.layout_style == 'slider' -%} data-grid-slider-wrapper{%- endif -%}
+      >
+        {%- if section.settings.layout_style == 'slider' -%}
+          <safe-load-scripts class="hidden">
+            <script src="{{ 'component-grid-slider.js' | asset_url }}" defer="defer" type="module" data-flow-load-key="grid-slider"></script>
+          </safe-load-scripts>
+
+          <!-- navigation -->
+          {% assign navigation_id = 'navigation--' | append: section.id %}
+          <div class="swiper-btn--wrapper small-hide swiper-btn-layout__{{ settings.hover_navigation_desktop }}">
+            <div class="swiper-button--prev btn dynamic-section-button--{{ navigation_id }}">
+              {% render 'theme-icon', icon: 'chevron_left' %}
+            </div>
+            <div class="swiper-button--next btn dynamic-section-button--{{ navigation_id }}">
+              {% render 'theme-icon', icon: 'chevron_right' %}
+            </div>
+          </div>
+          {% if section.settings.override_button_colors %}
+            {% render 'button-color-overrides' with
+              id: navigation_id,
+              style: 'filled',
+              text_color: section.settings.button_text_color,
+              background_color: section.settings.button_background_color
+            %}
+          {% endif %}
+
+          <grid-slider 
+            class="swiper"
+            data-slides-per-view-desktop="{{ section.settings.grid-desktop }}"
+            data-slides-per-view-mobile="{{ section.settings.grid-mobile }}"
+            data-product-limit="{{ product_limit }}"
+            data-grid-spacing-desktop="{{ settings.grid_spacing }}"
+            data-grid-spacing-mobile="{{ settings.grid_spacing | times: 0.75 }}"
+          >
+            <div class="swiper-wrapper">
+        {%- endif -%}
+          {% for product in collection.products limit: product_limit %}
+            
+            {% comment %}
+              Set the default grid_item_width if no variable is set
+            {% endcomment %}
+            {% unless grid_item_width %}
+              {% assign grid_item_width = 'large--one-third medium--one-half' %}
+            {% endunless %}
+
+            {% if section.settings.layout_style == 'slider' %}
+              <div class="grid__item {{ grid_item_width }} swiper-slide">
+            {% else %}
+              <div class="grid__item {{ grid_item_width }} featured-product--grid-item">
+            {% endif %}
+                {% render 'grid-view-item', product: product, collection: collection, enable_badges: settings.show_badges, grid_count_desktop: section.settings.grid-desktop, grid_count_mobile: section.settings.grid-mobile, section_color_scheme: section.settings.colors, section_id: section.id %}
+            </div>
+
+          {% else %}
+            {% for i in (1..product_limit) %}
+              {% capture svg_index %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+              {% capture svg_index_reversed %}{% cycle 6, 5, 4, 3, 2, 1 %}{% endcapture %}
+              {% if section.settings.layout_style == 'slider' %}
+                <div class="grid__item {{ grid_item_width }} swiper-slide">
+              {% else %}
+                <div class="grid__item {{ grid_item_width }} featured-product--grid-item">
+              {% endif %}
+                  {% render 'grid-view-item-placeholder', svg_index: svg_index, svg_index_reversed: svg_index_reversed, section_color_scheme: section.settings.colors, section_id: section.id %}
+              </div>
+            {% endfor %}
+          {% endfor %}
+        {%- if section.settings.layout_style == 'slider' -%}
+            </div>
+          </grid-slider>
+
+          <!-- pagination -->
+          <div class="swiper-pagination"></div>
+
+          <!-- scrollbar -->
+          <div class="swiper-scrollbar large-hide"></div>
+        {%- endif -%}
+      </div>
+
+      {% if section.settings.show_view_all %}
+        {%- liquid
+          assign view_all_label = 'collections.general.view_all' | t
+          assign view_all_aria_label = 'collections.general.view_all_label' | t: collection_name: collection.title
+          assign view_all_id = 'view-all--' | append: section.id
+        -%}
+        {% if section.settings.override_button_colors %}
+          {% render 'button-color-overrides' with
+            id: view_all_id,
+            style: section.settings.buttons_style,
+            text_color: section.settings.button_text_color,
+            background_color: section.settings.button_background_color
+          %}
+        {% endif %}
+        
+        {% render 'dynamic-section-button' with
+          id: view_all_id,
+          link: collection.url,
+          label: view_all_label,
+          aria_label: view_all_aria_label,
+          style: section.settings.buttons_style,
+          div_classes: 'text-center show-view-all--button'
+        %}
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.collection--featured-collection.name",
+  "class": "featured-products-wrapper",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:all.Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:all.Description"
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "t:all.Collection"
+    },
+    {
+      "type": "header",
+      "content": "t:all.Buttons"
+    },
+    {
+      "type": "checkbox",
+      "id": "override_button_colors",
+      "label": "t:all.Button_color_override",
+      "default": false,
+      "info": "t:all.Button_color_override_info"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "t:all.Primary_color",
+      "default": "#E68819"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:all.Secondary_color",
+      "default": "#ffffff",
+      "info": "t:all.Secondary_button_color_info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.collection--featured-collection.settings.view_all_button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "t:sections.collection--featured-collection.settings.show_view_all.label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "buttons_style",
+      "label": "t:all.view_all_button_style",
+      "default": "filled",
+      "info": "t:sections.collection--featured-collection.settings.view_all_button_info",
+      "options": [
+        {
+          "value": "filled",
+          "label": "t:all.Filled"
+        },
+        {
+          "value": "outlined",
+          "label": "t:all.Outlined"
+        },
+        {
+          "value": "underlined",
+          "label": "t:all.underlined"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:all.Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "t:all.Spacing_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "t:all.px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "t:all.Spacing_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "t:all.px",
+      "default": 60
+    },
+    {
+      "type": "radio",
+      "id": "layout_style",
+      "label": "t:all.Style",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:all.Grid"
+        },
+        {
+          "value": "slider",
+          "label": "t:all.Slider"
+        }
+      ],
+      "default": "slider"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "label": "t:all.Products_to_show",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "grid-desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "t:all.Product_per_row_desktop",
+      "default": 4
+    },
+    {
+      "type": "radio",
+      "id": "grid-mobile",
+      "label": "t:all.Product_per_row_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:all.1"
+        },
+        {
+          "value": "2",
+          "label": "t:all.2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "t:all.Color"
+    },
+    {
+      "type": "select",
+      "id": "colors",
+      "label": "t:all.Color_scheme",
+      "default": "white",
+      "options": [
+        {
+          "value": "white",
+          "label": "t:all.Minimal"
+        },
+        {
+          "value": "light",
+          "label": "t:all.Light"
+        },
+        {
+          "value": "accent",
+          "label": "t:all.Feature"
+        },
+        {
+          "value": "dark",
+          "label": "t:all.Dark"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.collection--featured-collection.presets.name",
+      "category": {
+        "en": "Collection",
+        "de": "Kollektion",
+        "es": "Colección",
+        "fr": "Collection",
+        "pt-PT": "Coleção"
+      }
+    }
+  ],
+  "disabled_on": {
+    "templates": [
+      "collection"
+    ],
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

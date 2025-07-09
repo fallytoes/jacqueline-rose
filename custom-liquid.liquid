@@ -1,0 +1,131 @@
+
+{%-  liquid
+  assign full_width = false
+  if section.settings.section_width == 'full-width'
+    assign full_width = true
+  endif
+-%}
+<style>
+  .custom-liquid img {
+    max-width: 100%;
+  }
+</style>
+<div
+  class="custom-liquid wrapper-spacing--v{% unless full_width %} wrapper-spacing--h{% endunless %} color-scheme--{{ section.settings.colors }}"
+  data-wetheme-section-type="advanced-layout--custom-html"
+  data-wetheme-section-id="{{ section.id }}"
+  style="--padding-section-top: {{ section.settings.section_padding_top }}px; --padding-section-bottom: {{ section.settings.section_padding_bottom }}px;"
+>
+	<div {% unless full_width %}class="width--{{ section.settings.section_width }}"{% endunless %}>
+    {% comment %} Section title and description {% endcomment %}
+    {% render 'dynamic-section-header' with section_title: section.settings.title, section_description: section.settings.description %}
+
+    <div class="rte text-link-animated">
+      {{ section.settings.custom_liquid }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.advanced-layout--custom-liquid.name",
+  "tag": "section",
+  "class": "section--custom-liquid show-on-scroll",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:all.Heading",
+      "default": "t:sections.advanced-layout--custom-liquid.name"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:all.Description"
+    },
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "t:all.Custom_Liquid",
+      "default": "<p style='text-align:center;margin:0;'>Add custom liquid code, support custom content or third party widgets like external forms, maps, calendar or iframe content.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:all.Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:all.Width",
+      "options": [
+        {
+          "value": "full-width",
+          "label": "t:all.Full_width"
+        },
+        {
+          "value": "content",
+          "label": "t:all.Content_width"
+        },
+        {
+          "value": "narrow",
+          "label": "t:all.Narrow"
+        }
+      ],
+      "default": "content"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "t:all.Spacing_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "t:all.px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "t:all.Spacing_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "t:all.px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "t:all.Color"
+    },
+    {
+      "type": "select",
+      "id": "colors",
+      "label": "t:all.Color_scheme",
+      "default": "white",
+      "options": [
+        {
+          "value": "white",
+          "label": "t:all.Minimal"
+        },
+        {
+          "value": "light",
+          "label": "t:all.Light"
+        },
+        {
+          "value": "accent",
+          "label": "t:all.Feature"
+        },
+        {
+          "value": "dark",
+          "label": "t:all.Dark"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.advanced-layout--custom-liquid.name"
+    }
+  ]
+}
+{% endschema %}

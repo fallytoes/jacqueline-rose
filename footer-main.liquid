@@ -1,0 +1,782 @@
+<style>
+
+.footer-main {
+  width: 100%;
+  background-color: #f4f4f4;
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+/* Constrain content to 1200px */
+.footer-main--inner.wrapper-spacing--h {
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* Ensure responsive behavior */
+@media screen and (max-width: 1200px) {
+  .footer-main--inner.wrapper-spacing--h {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .footer-main--inner.wrapper-spacing--h {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+  
+/* Basic footer container setup */
+.footer-main, 
+.footer-bottom {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 20px;
+}
+
+/* Main footer layout */
+.footer-main--inner {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Set column widths and prevent text wrapping */
+.footer-main--inner > div {
+  width: 20%;
+}
+
+/* Make sure all link text stays on one line */
+.footer-main a,
+.footer-main--inner a,
+.links-footer a,
+.links-footer li a,
+.footer-main--inner li a {
+  white-space: nowrap !important;
+  display: block;
+  width: fit-content;
+  margin-bottom: 8px;
+}
+
+.social-media-footer .social-icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px; /* Ensures spacing between icons */
+  list-style: none; /* Removes bullet points */
+  padding: 0;
+  margin: 0;
+}
+  
+/* Individual Social Icon List Item */
+.social-icons li {
+  display: inline-block; /* Ensure the list items stay in a row */
+  padding: 0;
+  margin: 0;
+}
+/* Social Icon Links */
+.social-icons li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none; /* Removes any unwanted underlines */
+}
+/* Social Icon SVG */
+.social-icons svg {
+width: 15px;
+height: 15px;
+color: #000;
+opacity: 0.7;
+transition: opacity 0.3s ease;
+}
+  
+.social-icons svg:hover {
+opacity: 1;
+}
+/* Ensure no additional styling */
+.social-media-footer .social-icons,
+.social-media-footer .social-icons li,
+.social-media-footer .social-icons li a {
+background: none;
+border: none;
+}
+
+  
+/* Mobile Responsiveness */
+@media screen and (max-width: 749px) {
+.newsletter-footer .input-group {
+flex-direction: column;
+max-width: 100%;
+}
+.newsletter-footer .input-group-field,
+.newsletter-footer .footer-email-submit {
+width: 100%;
+margin: 5px 0;
+}
+}
+  
+  
+/* Newsletter specific fixes */
+.newsletter-footer {
+  width: 32% !important;
+}
+
+.newsletter-footer .rte p {
+  white-space: normal !important;
+  line-height: 1.5;
+  text-align: left;
+  display: block;
+}
+
+.newsletter-footer .footer-header {
+  white-space: nowrap;
+  margin-bottom: 15px;
+  display: block;
+}
+.social-media-footer .social-icons,
+.social-media-footer .social-icons li,
+.social-media-footer .social-icons li a {
+background: none;
+border: none;
+}
+/* Fix the entire newsletter text block */
+.newsletter-footer .footer-article {
+  display: block;
+  white-space: normal;
+  width: 100%;
+}
+
+/* Fix the email input form */
+.newsletter-footer .input-group {
+display: flex;
+width: 100%;
+max-width: 400px;
+margin-top: 15px;
+}
+.newsletter-footer .input-group-field {
+flex-grow: 1;
+height: 40px;
+border: 1px solid #000;
+padding: 0 10px;
+font-size: 14px;
+}
+.newsletter-footer .footer-email-submit {
+  white-space: nowrap;
+  height: 40px;
+  min-width: 100px;
+}
+
+/* Fix newsletter paragraph text */
+.newsletter-footer p {
+  max-width: 100%;
+  display: block;
+}
+
+/* Make sure newsletter text appears in a paragraph */
+.newsletter-footer .rte p,
+.newsletter-footer .footer-article p {
+  display: inline;
+}
+
+/* Make newsletter promotional text appear as a paragraph */
+.newsletter-footer h3 + p,
+.newsletter-footer .h3 + p,
+.newsletter-footer .footer-header + p {
+  display: block !important;
+  margin-top: 0;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+/* Newsletter text spacing fixes */
+.newsletter-footer p span,
+.newsletter-footer span {
+  display: inline;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 990px) {
+  .footer-main--inner {
+    flex-wrap: wrap;
+  }
+  
+  .footer-main--inner > div {
+    width: 47%;
+    margin-bottom: 30px;
+  }
+  
+  .newsletter-footer {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .footer-main--inner > div {
+    width: 100%;
+  }
+  
+  /* On mobile, allow text to wrap */
+  .footer-main a,
+  .links-footer li,
+  .content-footer div {
+    white-space: normal;
+  }
+}
+  /* Newsletter specific fixes */
+/* First, fix the width of the newsletter section */
+.footer-main--inner > div:last-child,
+.newsletter-footer {
+  width: 40% !important; /* Make newsletter much wider */
+}
+
+/* Adjust other columns to balance the layout */
+.footer-main--inner > div:not(:last-child) {
+  width: 16%; /* Make other columns slightly narrower */
+}
+
+/* Fix the duplicate text issue by hiding the second instance */
+.newsletter-footer .rte p + p {
+  display: none !important; /* Hide duplicate paragraph */
+}
+
+/* Format the newsletter signup text with proper spacing */
+.newsletter-footer .rte p {
+  max-width: 250px;
+  white-space: normal !important;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Style the email form properly */
+.newsletter-footer .input-group {
+  display: flex;
+  width: 100%;
+  max-width: 400px; /* Wider form */
+  margin-top: 20px;
+}
+
+.newsletter-footer .input-group-field {
+  flex: 1;
+  min-width: 250px; /* Wider input field */
+  height: 45px;
+  padding: 0 15px;
+  border: 1px solid #ddd;
+}
+
+/* Style the subscribe button */
+.newsletter-footer .footer-email-submit {
+background-color: #fff !important;
+color: #000 !important;
+border: 1px solid #000;
+padding: 0 15px;
+height: 40px;
+text-transform: uppercase;
+font-size: 12px;
+font-weight: 500;
+margin-left: 10px;
+}
+
+
+/* Make sure the GET 10% OFF is prominent */
+.newsletter-footer .footer-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 990px) {
+  .footer-main--inner {
+    flex-wrap: wrap;
+  }
+  
+  .footer-main--inner > div:not(:last-child) {
+    width: 22%;
+    margin-bottom: 30px;
+  }
+  
+  .footer-main--inner > div:last-child,
+  .newsletter-footer {
+    width: 100% !important;
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .footer-main--inner > div:not(:last-child) {
+    width: 48%;
+  }
+}
+
+  /* Increase the newsletter width */
+.footer-main--inner > div:last-child,
+.newsletter-footer {
+  width: 50% !important; /* Make newsletter significantly wider */
+  min-width: 280px; /* Ensure minimum width on all devices */
+}
+
+/* Make the newsletter form elements wider */
+.newsletter-footer .input-group {
+  width: 100%;
+  max-width: 450px;
+}
+
+.newsletter-footer .input-group-field {
+  min-width: 300px;
+}
+
+/* Ensure text has enough width to display properly */
+.newsletter-footer .rte p {
+  max-width: 400px;
+  white-space: normal !important;
+}
+
+
+  @media screen and (max-width: 749px) {
+  .footer-main--inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-main--inner > div {
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  /* Center links */
+  .links-footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .links-footer .footer-content li {
+    text-align: center;
+  }
+
+
+
+  /* Center newsletter form */
+  .newsletter-footer .input-group {
+    justify-content: center;
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .newsletter-footer .input-group-field,
+  .newsletter-footer .footer-email-submit {
+    text-align: center;
+  }
+
+  /* Ensure footer headers are centered */
+  .footer-header {
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Adjust text blocks */
+  .content-footer .footer-article {
+    text-align: center;
+  }
+}
+</style>
+
+<footer
+  class="footer-main {{ section.settings.color_scheme }} flex-full color-scheme--{{ section.settings.color_scheme }} site-footer{% if template contains 'product' %}{% if settings.related_products_enable %}{% else %} product-sticker-stop{% endif %}{% endif %} footer-alignment--{{ section.settings.alignment }}"
+  data-wetheme-section-type="footer-main" data-wetheme-section-id="{{ section.id }}"
+  style="--footer-heading-font-size: {{ section.settings.heading_font_size }}px;">
+	<div 
+    class="footer-main--inner wrapper-spacing--h"
+    style="grid-template-columns: repeat({{ section.blocks.size }}, 1fr);">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'social' %}
+
+          <div class="social-media-footer{% if forloop.first %} border-none padding-none{% endif %}" {{ block.shopify_attributes }}>
+            {% unless block.settings.social_title == "" %}
+              <div class="h3 footer-header">{{ block.settings.social_title | escape }}</div>
+            {% endunless %}
+            {% render 'social-icons' %}
+          </div>
+
+
+          {% when 'menu' %}
+
+            {% assign menu = linklists[block.settings.footer_linklist] %}
+            <div class="links-footer{% if forloop.first %} border-none padding-none{% endif %}" {{ block.shopify_attributes }}>
+              {% unless block.settings.menu_title == "" %}
+                <div class="h3 footer-header">{{ block.settings.menu_title | escape }}</div>
+              {% endunless %}
+              {% if menu.links.size > 0 %}
+                <ul class="footer-content nav-link-animated">
+                  {% for link in menu.links %}
+                    {% if link.links != blank %}
+                      <li>
+                        <a href="{{ link.url }}" class="footer--has-dropdown-title"><span class="animated-underline">{{ link.title }}</span></a>
+                        <ul class="footer--level-2">
+                          {% for sub_link in link.links %}
+                            <li><a href="{{ sub_link.url }}"><span class="animated-underline">{{ sub_link.title | escape }}</span></a></li>
+                          {% endfor %}
+                        </ul>
+                      </li>
+                    {% else %}
+                      <li>
+                        <a href="{{ link.url }}"><span class="animated-underline">{{ link.title }}</span></a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+
+          {% when 'text' %}
+
+            <div class="content-footer{% if forloop.first %} border-none padding-none{% endif %}" {{ block.shopify_attributes }}>
+              {% unless block.settings.title == "" %}
+                <div class="h3 footer-header">{{ block.settings.title | escape }}</div>
+              {% endunless %}
+              {% unless block.settings.richtext == "" %}
+                <div class="rte footer-article text-link-animated richtext-block">{{ block.settings.richtext }}</div>
+              {% endunless %}
+            </div>
+
+        {% when 'follow_on_shop' %}
+
+          <div class="content-footer{% if forloop.first %} border-none padding-none{% endif %}" {{ block.shopify_attributes }}>
+            {% unless block.settings.title == "" %}
+              <div class="h3 footer-header">{{ block.settings.title | escape }}</div>
+            {% endunless %}
+            {% if shop.features.follow_on_shop? %}
+              {{ shop | login_button: action: 'follow' }}
+            {% endif %}
+          </div>
+
+				{% when 'image' %}
+
+          <div class="image-footer{% if forloop.first %} border-none padding-none{% endif %}" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              {%- assign img_url = block.settings.image | image_url: width: 600 -%}
+            {% else %}
+              {%- assign img_url = '' -%}
+            {% endif %}
+
+            {% unless block.settings.title == "" %}
+              <div class="h3 footer-header">{{ block.settings.title }}</div>
+            {% endunless %}
+
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}">
+            {% elsif img_url != blank %}
+              <div class="image-bar__item">
+            {% else %}
+              <div class="image-bar__item">
+            {% endif %}
+
+            <div class="image-bar__content">
+              {% if img_url == blank %}
+                {{ 'image' | placeholder_svg_tag: 'icon icon--placeholder' }}
+              {% else %}
+                {% render 'responsive-image' with block.settings.image %}
+              {% endif %}
+            </div>
+
+            {% if block.settings.link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+
+        {% when 'newsletter' %}
+
+         {% when 'newsletter' %}
+  <div class="newsletter-footer{% if forloop.first %} border-none padding-none{% endif %}" {{ block.shopify_attributes }}>
+    {% unless block.settings.newsletter_title == "" %}
+      <div class="h3 footer-header">{{ block.settings.newsletter_title | escape }}</div>
+    {% endunless %}
+
+    <div class="newsletter-footer--wrapper">
+      {% if block.settings.footer_newsletter_description != empty %}
+        <div class="rte footer-article text-link-animated richtext-block">{{ block.settings.footer_newsletter_description }}</div>
+      {% endif %}
+      
+      <!-- Mailchimp form replaces the default Shopify newsletter form -->
+      <div class="mailchimp-signup-form">
+        <form action="https://jacquelinerose.us2.list-manage.com/subscribe/post?u=623792487b4008721d167d5b6&amp;id=0856ff9a4d&amp;f_id=00ea4ee0f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+          <div id="mc_embed_signup_scroll">
+            <div class="input-group{% if block.settings.buttons_style == 'underlined' %} text-link-animated{% endif %}">
+              <input type="email" name="EMAIL" class="required email input-group-field footer-email-input" id="mce-EMAIL" required placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" pattern=".+@.+\..+" title="{{ 'general.forms.email_must_be_formatted_as_an_email' | t }}">
+              
+              <!-- This hidden input helps prevent bot signups -->
+              <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                <input type="text" name="b_623792487b4008721d167d5b6_3816d7be34" tabindex="-1" value="">
+              </div>
+              
+              {% liquid
+                case block.settings.buttons_style
+                  when 'filled'
+                    assign button_classes = 'btn'
+                  when 'outlined'
+                    assign button_classes = 'btn btn--secondary'
+                  when 'underlined'
+                    assign button_classes = 'btn--underlined'
+                endcase
+              %}
+              
+              {% if block.settings.override_button_colors %}
+                {% render 'button-color-overrides' with
+                  id: block.id,
+                  style: block.settings.buttons_style,
+                  text_color: block.settings.button_text_color,
+                  background_color: block.settings.button_background_color
+                %}
+              {% endif %}
+              
+              <button type="submit" name="subscribe" class="{{ button_classes }} footer-email-submit dynamic-section-button--{{ block.id }}" id="mc-embedded-subscribe">{{ 'general.newsletter_form.submit' | t }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Mailchimp JavaScript - Add at the bottom of your theme.liquid before closing body tag -->
+      {% comment %}
+<script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script><script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='COMPANY';ftypes[3]='text';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='ADDRESS';ftypes[5]='address';fnames[6]='LAST_ORDER';ftypes[6]='date';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+      {% endcomment %}
+    </div>
+  </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "t:sections.footer-main.name",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:sections.footer-main.settings.alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:all.Left"
+        },
+        {
+          "value": "center",
+          "label": "t:all.Center"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "t:all.heading_font_size",
+      "min": 12,
+      "max": 112,
+      "unit": "t:all.px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "t:all.Color"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "t:all.Color_scheme",
+      "default": "accent",
+      "options": [
+        {
+          "value": "white",
+          "label": "t:all.Default"
+        },
+        {
+          "value": "light",
+          "label": "t:all.First"
+        },
+        {
+          "value": "accent",
+          "label": "t:all.Second"
+        },
+        {
+          "value": "dark",
+          "label": "t:all.Third"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "t:all.Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:all.Heading",
+          "default": "Text details"
+        },
+        {
+          "type": "richtext",
+          "id": "richtext",
+          "label": "t:all.Text",
+          "default": "<p>Create a captivating brand story, explain details of your products or highlight store promotions</p>"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "t:all.Navigation",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "t:all.Heading",
+          "default": "Quick links"
+        },
+        {
+          "type": "link_list",
+          "id": "footer_linklist",
+          "label": "t:sections.footer-main.blocks.menu.settings.footer_linklist.label",
+          "default": "footer",
+          "info": "t:sections.footer-main.blocks.menu.settings.footer_linklist.info"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "t:all.Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "newsletter_title",
+          "label": "t:all.Heading",
+          "default": "Newsletter"
+        },
+        {
+          "type": "richtext",
+          "id": "footer_newsletter_description",
+          "label": "t:sections.footer-main.blocks.newsletter.settings.footer_newsletter_description.label"
+        },
+        {
+          "type": "header",
+          "content": "t:all.Buttons"
+        },
+        {
+          "type": "select",
+          "id": "buttons_style",
+          "label": "t:all.button_style",
+          "default": "filled",
+          "options": [
+            {
+              "value": "filled",
+              "label": "t:all.Filled"
+            },
+            {
+              "value": "outlined",
+              "label": "t:all.Outlined"
+            },
+            {
+              "value": "underlined",
+              "label": "t:all.underlined"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "override_button_colors",
+          "label": "t:all.Button_color_override",
+          "default": false,
+          "info": "t:all.Button_color_override_info"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "t:all.Primary_color",
+          "default": "#E68819"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "t:all.Secondary_color",
+          "default": "#ffffff",
+          "info": "t:all.Secondary_button_color_info"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "t:sections.footer-main.blocks.social.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "social_title",
+          "label": "t:all.Heading",
+          "default": "Get connected"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.footer-main.blocks.social.settings.paragraph-1.content"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "t:all.Image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:all.Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:all.Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:all.Link",
+          "info": "t:all.Optional"
+        }
+      ]
+    },
+    {
+      "type": "follow_on_shop",
+      "name": "t:sections.footer-main.blocks.follow_on_shop.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.footer-main.blocks.follow_on_shop.settings.paragraph-0.content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:all.Heading",
+          "default": "Follow us on the Shop app"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
