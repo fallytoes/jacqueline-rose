@@ -1,0 +1,219 @@
+{
+  "sections": {
+    "image_with_text_overlay_wTErmy": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_iqcaW4": {
+          "type": "heading",
+          "settings": {
+            "title": "Contact us",
+            "font_size_desktop": 32,
+            "font_size_mobile": 32,
+            "heading_bottom_spacing": 0
+          }
+        }
+      },
+      "block_order": [
+        "heading_iqcaW4"
+      ],
+      "settings": {
+        "height_desktop": "450px",
+        "text_position_desktop": "center",
+        "text_alignment_desktop": "center",
+        "caption_width_desktop": 100,
+        "height_mobile": "250px",
+        "text_position_mobile": "center",
+        "text_alignment_mobile": "center",
+        "section_link": "",
+        "animation_style": "none",
+        "section_margin_top": 0,
+        "section_margin_bottom": 0,
+        "image_overlay_opacity": 0
+      }
+    },
+    "72ac6be4-8c86-455d-ab4d-80b4ffea5e0e": {
+      "type": "template--product--info-columns",
+      "blocks": {
+        "template--16327181435045__72ac6be4-8c86-455d-ab4d-80b4ffea5e0e-image_and_text-2": {
+          "type": "image_and_text",
+          "settings": {
+            "grid_image_size": "natural",
+            "button_text": "Learn more",
+            "button_link": ""
+          }
+        },
+        "c3a70509-5ff5-40af-8cd4-8ab177cf6a4d": {
+          "type": "image_and_text",
+          "settings": {
+            "grid_image_size": "natural",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "7703f9ae-7bb1-4675-82dd-011b8963bda7": {
+          "type": "image_and_text",
+          "settings": {
+            "grid_image_size": "natural",
+            "button_text": "Learn more",
+            "button_link": ""
+          }
+        },
+        "eecde486-3ceb-4b7f-b9b6-d594c77294e8": {
+          "type": "image_and_text",
+          "settings": {
+            "grid_image_size": "natural",
+            "button_text": "Learn more",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--16327181435045__72ac6be4-8c86-455d-ab4d-80b4ffea5e0e-image_and_text-2",
+        "c3a70509-5ff5-40af-8cd4-8ab177cf6a4d",
+        "7703f9ae-7bb1-4675-82dd-011b8963bda7",
+        "eecde486-3ceb-4b7f-b9b6-d594c77294e8"
+      ],
+      "settings": {
+        "title": "",
+        "description": "",
+        "columns_per_row": 4,
+        "text_alignment": "center",
+        "vertical_alignment": "top",
+        "section_padding_top": 30,
+        "section_padding_bottom": 30,
+        "colors": "light"
+      }
+    },
+    "057a50d5-3fee-4ea2-a832-2d38f47b959a": {
+      "type": "contact-form",
+      "blocks": {
+        "template--14753984643142__057a50d5-3fee-4ea2-a832-2d38f47b959a-16788945317184afd8-0": {
+          "type": "name_input",
+          "settings": {
+            "required": true,
+            "input_width": "full"
+          }
+        },
+        "template--14753984643142__057a50d5-3fee-4ea2-a832-2d38f47b959a-16788945317184afd8-1": {
+          "type": "email_input",
+          "settings": {
+            "required": true,
+            "input_width": "partial"
+          }
+        },
+        "f03adfd7-1474-4f7a-a28a-c0c1430bd42d": {
+          "type": "tel_input",
+          "settings": {
+            "required": false,
+            "input_width": "partial"
+          }
+        },
+        "fbb2a872-0770-4f56-913c-b7853e33a9c0": {
+          "type": "custom_input",
+          "settings": {
+            "placeholder": "Order number",
+            "required": false,
+            "input_width": "full"
+          }
+        },
+        "template--14753984643142__057a50d5-3fee-4ea2-a832-2d38f47b959a-16788945317184afd8-3": {
+          "type": "message_input",
+          "settings": {
+            "required": false,
+            "input_width": "full"
+          }
+        }
+      },
+      "block_order": [
+        "template--14753984643142__057a50d5-3fee-4ea2-a832-2d38f47b959a-16788945317184afd8-0",
+        "template--14753984643142__057a50d5-3fee-4ea2-a832-2d38f47b959a-16788945317184afd8-1",
+        "f03adfd7-1474-4f7a-a28a-c0c1430bd42d",
+        "fbb2a872-0770-4f56-913c-b7853e33a9c0",
+        "template--14753984643142__057a50d5-3fee-4ea2-a832-2d38f47b959a-16788945317184afd8-3"
+      ],
+      "settings": {
+        "form_width": "narrow",
+        "title": "Contact us",
+        "description": "<p>Have a question, or want a product recommendation? Get in touch.<\/p>",
+        "section_padding_top": 60,
+        "section_padding_bottom": 60,
+        "section_color_scheme": "white"
+      }
+    },
+    "image_with_text_overlay_jXiD3c": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_tUYWeP": {
+          "type": "heading",
+          "settings": {
+            "font_size_desktop": 28,
+            "font_size_mobile": 28,
+            "heading_bottom_spacing": 25
+          }
+        },
+        "text_nUY8fV": {
+          "type": "text",
+          "settings": {
+            "font_size_desktop": 16,
+            "font_size_mobile": 16,
+            "text_bottom_spacing": 20
+          }
+        },
+        "text_with_icon_aaWx3x": {
+          "type": "text_with_icon",
+          "settings": {
+            "icon": "map-pin",
+            "link": "",
+            "text_with_icon_bottom_spacing": 5
+          }
+        },
+        "text_with_icon_cRq8Bj": {
+          "type": "text_with_icon",
+          "settings": {
+            "icon": "map-pin",
+            "link": "",
+            "text_with_icon_bottom_spacing": 20
+          }
+        },
+        "button_96EwNC": {
+          "type": "button",
+          "settings": {
+            "second_button_link": "",
+            "second_button_label": "",
+            "buttons_style": "filled",
+            "buttons_bottom_spacing": 0
+          }
+        }
+      },
+      "block_order": [
+        "heading_tUYWeP",
+        "text_nUY8fV",
+        "text_with_icon_aaWx3x",
+        "text_with_icon_cRq8Bj",
+        "button_96EwNC"
+      ],
+      "settings": {
+        "height_desktop": "450px",
+        "text_position_desktop": "left",
+        "text_alignment_desktop": "left",
+        "caption_width_desktop": 75,
+        "height_mobile": "300px",
+        "text_position_mobile": "center",
+        "text_alignment_mobile": "left",
+        "section_link": "",
+        "animation_style": "none",
+        "section_margin_top": 0,
+        "section_margin_bottom": 0,
+        "text_color": "#242424",
+        "caption_bg_color": "#FFFFFF",
+        "image_overlay_opacity": 0
+      }
+    }
+  },
+  "order": [
+    "image_with_text_overlay_wTErmy",
+    "72ac6be4-8c86-455d-ab4d-80b4ffea5e0e",
+    "057a50d5-3fee-4ea2-a832-2d38f47b959a",
+    "image_with_text_overlay_jXiD3c"
+  ]
+}

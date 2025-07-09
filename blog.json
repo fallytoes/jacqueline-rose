@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "template--blog",
+      "settings": {
+        "show_author_name": false,
+        "blog_show_date": true,
+        "blog-sidebar-link": "",
+        "blog-sidebar-description": "",
+        "show_blog_tags": false,
+        "show_recent_posts": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

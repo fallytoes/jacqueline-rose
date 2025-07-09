@@ -1,0 +1,19 @@
+{
+  "wrapper": "div.collection-wrapper",
+  "sections": {
+    "main": {
+      "type": "template--search",
+      "settings": {
+        "desktop-results-per-row": 4,
+        "mobile-results-per-row": "1",
+        "desktop_position": "sidebar",
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "show_swatch_filter_labels": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
